@@ -1,0 +1,2 @@
+void Hook();
+void Unhook();

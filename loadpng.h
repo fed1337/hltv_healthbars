@@ -1,0 +1,1 @@
+unsigned int Load_PNG_Texture(char* filename, int* width, int* height);
