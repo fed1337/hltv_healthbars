@@ -1,0 +1,112 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  build:
+    if: "!startsWith(github.event.head_commit.message, 'bump:')"
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive
+
+      - name: Setup MSVC (x86)
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x86
+
+      - name: Config
+        run: cmake -B build -G "Visual Studio 17 2022" -A Win32 -T v142
+
+      - name: Build
+        run: cmake --build build --config Release
+
+      - name: Upload DLL
+        uses: actions/upload-artifact@v7
+        with:
+          name: hltv_healthbars
+          path: build/Release/*.dll
+
+  release:
+    needs: build
+    if: "!startsWith(github.event.head_commit.message, 'bump:')"
+    runs-on: ubuntu-latest
+
+    outputs:
+      version: ${{ steps.cz.outputs.version }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: hltv_healthbars
+          path: artifacts
+
+      - name: Create bump and changelog
+        id: cz
+        uses: commitizen-tools/commitizen-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          changelog_increment_filename: body.md
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      - name: Build country flags
+        shell: bash
+        run: |
+          git clone --depth=1 https://github.com/hampusborgos/country-flags.git flags-src
+          cd flags-src
+          npm install
+          npm install svgexport imagemin-cli --save-dev
+          npm run build-pngs -- :32
+
+      - name: Prepare release bundle
+        run: |
+          VERSION=v${{ env.REVISION }}
+
+          mkdir -p dist/cstrike/resource/UI
+          mkdir -p dist/cstrike/gfx/vgui
+          mkdir -p dist/hltv_healthbars/flags
+
+          cp artifacts/hltv_healthbars.dll dist/hltv_healthbars/
+          cp -r flags-src/png32px/* dist/hltv_healthbars/flags/
+          cp cstrike/resource/UI/BottomSpectator.res dist/cstrike/resource/UI/
+          cp cstrike/resource/UI/ScoreBoard.res dist/cstrike/resource/UI/
+          cp cstrike/resource/UI/Spectator.res dist/cstrike/resource/UI/
+          cp cstrike/resource/ClientScheme.res dist/cstrike/resource/
+          cp cstrike/gfx/vgui/timer.tga  dist/cstrike/gfx/vgui/
+          cp cstrike/720.cfg  dist/cstrike/
+          cp README.md dist/
+          cp sprites.txt dist/hltv_healthbars/
+          cd dist
+
+          zip -r ../hltv_healthbars-${VERSION}.zip .
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          body_path: body.md
+          tag_name: v${{ env.REVISION }}
+          files: |
+            hltv_healthbars-v${{ env.REVISION }}.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

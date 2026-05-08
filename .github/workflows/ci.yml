@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Install clang-format
+        run: sudo apt-get update && sudo apt-get install -y clang-format-20
+
+      - name: Check formatting
+        run: |
+          files=$(git ls-files 'src/*.cpp' 'src/*.h')
+          clang-format --dry-run --Werror $files
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive
+
+      - name: Install clang tools
+        run: sudo apt-get update && sudo apt-get install -y clang-tidy-20 cmake ninja-build
+
+      - name: Configure
+        run: cmake -B build -G Ninja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+
+      - name: Run clang-tidy
+        run: |
+          files=$(git ls-files 'src/*.cpp')
+          clang-tidy -p build -extra-arg="--std=c++11" $files
