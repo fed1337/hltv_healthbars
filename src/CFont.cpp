@@ -27,9 +27,8 @@ void CFont::InitText() {
     HDC hDC = CreateCompatibleDC(nullptr);
     if (!hDC) return;
 
-    HFONT hFont = CreateFontA(size, 0, 0, 0, FW_BOLD, FALSE, FALSE, FALSE,
-                             ANSI_CHARSET, OUT_TT_ONLY_PRECIS, CLIP_DEFAULT_PRECIS,
-                             ANTIALIASED_QUALITY, DEFAULT_PITCH | FF_DONTCARE, name);
+    HFONT hFont = CreateFontA(size, 0, 0, 0, FW_BOLD, FALSE, FALSE, FALSE, ANSI_CHARSET, OUT_TT_ONLY_PRECIS,
+                              CLIP_DEFAULT_PRECIS, ANTIALIASED_QUALITY, DEFAULT_PITCH | FF_DONTCARE, name);
 
     if (!hFont) {
         DeleteDC(hDC);
@@ -50,7 +49,7 @@ void CFont::InitText() {
     DeleteDC(hDC);
 
     unsigned char t_bitmap[512 * 512];
-    stbtt_BakeFontBitmap(fontBuffer.data(), 0, (float)size, t_bitmap, 512, 512, 32, 96, cdata);
+    stbtt_BakeFontBitmap(fontBuffer.data(), 0, (float) size, t_bitmap, 512, 512, 32, 96, cdata);
 
     if (textureID != 0) glDeleteTextures(1, &textureID);
     glGenTextures(1, &textureID);
@@ -60,7 +59,7 @@ void CFont::InitText() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    cheight = (float)size;
+    cheight = (float) size;
     for (int i = 0; i < 256; i++) {
         cwidth[i] = (i >= 32 && i < 128) ? cdata[i - 32].xadvance : 0.0f;
     }
@@ -77,18 +76,18 @@ void CFont::Print(int x, int y, int r, int g, int b, int a, BYTE flags, int maxl
 
     float drawlen = 0;
     for (char *p = strText; *p; p++) {
-        drawlen += cwidth[(unsigned char)*p];
+        drawlen += cwidth[(unsigned char) *p];
         if (maxlen > 0 && drawlen >= maxlen) {
             *p = 0;
             break;
         }
     }
 
-    float fx = (float)x;
-    float fy = (float)y;
+    float fx = (float) x;
+    float fy = (float) y;
 
     if (flags & FL_CENTER_X) fx -= (drawlen / 2.0F);
-    if (flags & FL_RIGHT)    fx -= drawlen;
+    if (flags & FL_RIGHT) fx -= drawlen;
     if (flags & FL_CENTER_Y) fy += (cheight / 2.0F);
 
     // --- SENIOR STATE GUARD START ---
@@ -134,14 +133,18 @@ void CFont::Render(float x, float y, int r, int g, int b, int a, char *string) {
     glColor4ub(r, g, b, a);
     glBegin(GL_QUADS);
     for (int i = 0; string[i]; i++) {
-        unsigned char c = (unsigned char)string[i];
+        unsigned char c = (unsigned char) string[i];
         if (c >= 32 && c < 128) {
             stbtt_aligned_quad q;
             stbtt_GetBakedQuad(cdata, 512, 512, c - 32, &x, &y, &q, 1);
-            glTexCoord2f(q.s0, q.t0); glVertex2f(q.x0, q.y0);
-            glTexCoord2f(q.s1, q.t0); glVertex2f(q.x1, q.y0);
-            glTexCoord2f(q.s1, q.t1); glVertex2f(q.x1, q.y1);
-            glTexCoord2f(q.s0, q.t1); glVertex2f(q.x0, q.y1);
+            glTexCoord2f(q.s0, q.t0);
+            glVertex2f(q.x0, q.y0);
+            glTexCoord2f(q.s1, q.t0);
+            glVertex2f(q.x1, q.y0);
+            glTexCoord2f(q.s1, q.t1);
+            glVertex2f(q.x1, q.y1);
+            glTexCoord2f(q.s0, q.t1);
+            glVertex2f(q.x0, q.y1);
         }
     }
     glEnd();

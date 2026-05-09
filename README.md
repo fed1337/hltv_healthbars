@@ -11,21 +11,24 @@ Mostly used by Counter-Strike 1.6 streamers in the 2010s.
 - Health bars (including team, nick, HP, current weapon, bomb/defuse kit, reloading status)
 
 ## Usage
+
 1. Download the latest release
 2. Extract the archive into your counter strike 1.6 folder (replace existing files, it's harmless,
-but you may want to make a backup first)
+   but you may want to make a backup first)
 3. Run the game, make sure it runs in 1280x720 resolution (otherwise may need to tweak configs)
 4. Inject the dll in `<your game folder>/hltv_healthbars/hltv_healthbars.dll` to `hl.exe` process using
-[Extreme Injector](https://github.com/master131/extremeinjector) or any other suitable tool
+   [Extreme Injector](https://github.com/master131/extremeinjector) or any other suitable tool
 5. Open in-game console and type `exec 720.cfg`
 6. Connect to HLTV server with `hltv_connect IP` or play a demo
-7. Type hltv_help & enjoy
+7. Type `hltv_help` to print available commands
+8. Enjoy
+9. (optional) Download & install `Roboto Condensed` font
+   from [Google Fonts](https://fonts.google.com/specimen/Roboto+Condensed)
 
 ## Building from source
 
-1. Clone this repo
-2. Navigate to the repo folder and `git submodule add https://github.com/ValveSoftware/halflife external/hlsdk`
-3. Load cmake project and compile
+1. Clone this repo with `git clone --recursive https://github.com/ValveSoftware/hltv_healthbars.git`
+2. Load cmake project and compile
 
 ## Contributing
 

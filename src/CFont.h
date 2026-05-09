@@ -5,12 +5,12 @@
 #include "../external/stb/stb_truetype.h"
 
 // Alignment and Style Flags
-#define FL_NONE      0
-#define FL_OUTLINE   (1 << 0)
-#define FL_BACKDROP  (1 << 1)
-#define FL_CENTER_X  (1 << 2)
-#define FL_CENTER_Y  (1 << 3)
-#define FL_RIGHT     (1 << 4)
+#define FL_NONE 0
+#define FL_OUTLINE (1 << 0)
+#define FL_BACKDROP (1 << 1)
+#define FL_CENTER_X (1 << 2)
+#define FL_CENTER_Y (1 << 3)
+#define FL_RIGHT (1 << 4)
 
 class CFont {
 public:

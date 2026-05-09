@@ -114,8 +114,8 @@ void CClassicHealthBar::DrawWeapon() {
     } else if (info.team == 1 && info.kitbomb) {
         float scale = 0.75F;
         glScalef(scale, scale, 1.F);
-        CHelpers::drawSprite((this->x + this->width + 22) * 1 / scale, (this->y + (this->height / 2)) * 1 / scale,
-                             "c4", false, nullptr);
+        CHelpers::drawSprite((this->x + this->width + 22) * 1 / scale, (this->y + (this->height / 2)) * 1 / scale, "c4",
+                             false, nullptr);
         glLoadIdentity();
         spacing = 36;
     }

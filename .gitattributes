@@ -1,9 +1,6 @@
-# Ensure all C++ files use LF (Linux style) even on Windows
 *.cpp text eol=lf
 *.h   text eol=lf
-*.hpp text eol=lf
-# Ensure config files are consistent
 .clang-format text eol=lf
 .clang-tidy text eol=lf
-# Ensure cstrike resouces stay crlf
 *.res text eol=crlf
+*.txt text eol=crlf

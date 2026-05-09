@@ -95,8 +95,8 @@ jobs:
           cp cstrike/resource/ClientScheme.res dist/cstrike/resource/
           cp cstrike/gfx/vgui/timer.tga  dist/cstrike/gfx/vgui/
           cp cstrike/720.cfg  dist/cstrike/
+          cp cstrike/sprites.txt dist/hltv_healthbars/
           cp README.md dist/
-          cp sprites.txt dist/hltv_healthbars/
           cd dist
 
           zip -r ../hltv_healthbars-${VERSION}.zip .
