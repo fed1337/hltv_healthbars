@@ -1,6 +1,5 @@
-*.cpp text eol=lf
-*.h   text eol=lf
-.clang-format text eol=lf
-.clang-tidy text eol=lf
+.* text eol=lf
 *.res text eol=crlf
 *.txt text eol=crlf
+*.cfg text eol=crlf
+
