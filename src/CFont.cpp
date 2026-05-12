@@ -11,23 +11,26 @@
 CFont::CFont() {
     strncpy(name, "Verdana", 63);
     size = 12;
+    weight = 700;
     textureID = 0;
 }
 
-CFont::CFont(char *i_name, int i_size) {
+CFont::CFont(char *i_name, int i_size, int i_weight) {
     strncpy(name, i_name, 63);
     size = i_size;
+    weight = i_weight;
     textureID = 0;
 }
 
 void CFont::SetFont(char *szFont) { strncpy(name, szFont, 63); }
 void CFont::SetSize(int iSize) { this->size = iSize; }
+void CFont::SetWeight(int i_weight) { this->weight = i_weight; }
 
 void CFont::InitText() {
     HDC hDC = CreateCompatibleDC(nullptr);
     if (!hDC) return;
 
-    HFONT hFont = CreateFontA(size, 0, 0, 0, FW_BOLD, FALSE, FALSE, FALSE, ANSI_CHARSET, OUT_TT_ONLY_PRECIS,
+    HFONT hFont = CreateFontA(size, 0, 0, 0, weight, FALSE, FALSE, FALSE, ANSI_CHARSET, OUT_TT_ONLY_PRECIS,
                               CLIP_DEFAULT_PRECIS, ANTIALIASED_QUALITY, DEFAULT_PITCH | FF_DONTCARE, name);
 
     if (!hFont) {
@@ -90,7 +93,6 @@ void CFont::Print(int x, int y, int r, int g, int b, int a, BYTE flags, int maxl
     if (flags & FL_RIGHT) fx -= drawlen;
     if (flags & FL_CENTER_Y) fy += (cheight / 2.0F);
 
-    // --- SENIOR STATE GUARD START ---
     // 1. Save all attributes (Blending, Alpha Test, Textures, etc.)
     glPushAttrib(GL_ALL_ATTRIB_BITS);
 
@@ -126,7 +128,6 @@ void CFont::Print(int x, int y, int r, int g, int b, int a, BYTE flags, int maxl
 
     // 5. RESTORE: Put all flags/colors back
     glPopAttrib();
-    // --- SENIOR STATE GUARD END ---
 }
 
 void CFont::Render(float x, float y, int r, int g, int b, int a, char *string) {
@@ -150,9 +151,9 @@ void CFont::Render(float x, float y, int r, int g, int b, int a, char *string) {
     glEnd();
 }
 
-CFont g_fontGeneral("Verdana", 22);
-CFont g_fontHealthBar("Verdana", 18);
-CFont g_fontRoundTimer("Verdana", 22);
-CFont g_fontTeamScore("Verdana", 26);
-CFont g_fontTeamNames("Verdana", 38);
-CFont g_fontClanScore("Verdana", 26);
+CFont g_fontGeneral("Verdana", 24);
+CFont g_fontHealthBar("Verdana", 16);
+CFont g_fontRoundTimer("Verdana", 24);
+CFont g_fontTeamScore("Verdana", 16);
+CFont g_fontTeamNames("Verdana", 32);
+CFont g_fontClanScore("Verdana", 32);

@@ -10,7 +10,7 @@ struct hud_globals_s {
     char *szClanNames[2];
     int iClanScores[2];
     bool bBombPlanted;
-
+    hud_texture_s timer_icon;
     hud_texture_s team1_flag;
     hud_texture_s team2_flag;
 };

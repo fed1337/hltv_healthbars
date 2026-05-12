@@ -230,6 +230,7 @@ void Debug() {
 
 void RegisterCommands() {
     // Fonts
+    cvars->addConVar("healthbar_font_yoffset", "0", "font vertical offset");
     cvars->addConVar("healthbar_use_engine_font", "1", "use engine font or not");
     cvars->addConVar("general_font", "Verdana", "font");
     cvars->addConVar("healthbar_font", "Verdana", "font");
@@ -238,7 +239,6 @@ void RegisterCommands() {
     cvars->addConVar("teamnames_font", "Verdana", "font");
     cvars->addConVar("clanscore_font", "Verdana", "font");
 
-    cvars->addConVar("healthbar_font_yoffset", "0", "font vertical offset");
     // Sizes
     cvars->addConVar("general_font_size", "22", "font size");
     cvars->addConVar("healthbar_font_size", "18", "font size");

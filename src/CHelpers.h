@@ -28,7 +28,7 @@ public:
     // Drawing
     static void drawConsoleStringCentered(int x, int y, char *szMsg);
     static void drawConsoleStringRightAligned(int x, int y, char *szMsg);
-    static void drawSprite(int x, int y, char *szWeapon, bool reversed, dim_s *dim);
+    static void drawSprite(int x, int y, char *szWeapon, bool reversed, dim_s *dim, int r, int g, int b);
     // Misc
     static auto bFileExists(char *szFileName) -> bool;
     static auto bDirectoryExists(char *szDirectory) -> bool;

@@ -15,13 +15,13 @@
 class CFont {
 public:
     CFont();
-    CFont(char *i_name, int i_size);
+    CFont(char *i_name, int i_size, int i_weight = 700);
 
     void InitText();
     void SetFont(char *szFont);
     void SetSize(int iSize);
+    void SetWeight(int i_weight);
 
-    // API preserved for backward compatibility
     void Print(int x, int y, int r, int g, int b, int a, BYTE flags, int maxlen, char *string, ...);
 
 private:
@@ -29,6 +29,7 @@ private:
 
     char name[64];
     int size;
+    int weight;
     unsigned int textureID;
     stbtt_bakedchar cdata[96]; // ASCII 32..126
     float cheight;

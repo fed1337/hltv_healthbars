@@ -14,27 +14,39 @@ void CTopBar::Draw() {
 }
 
 void CTopBar::drawRoundTimer(int time) {
-    if (CConVars::getConVarFloat("enable_roundtimer") == 1) {
-        char szRoundTime[32];
-        sprintf(szRoundTime, "%d:%02d", time / 60, time % 60);
+    if (CConVars::getConVarFloat("enable_roundtimer") != 1) return;
+
+    char szRoundTime[32];
+    sprintf(szRoundTime, "%d:%02d", time / 60, time % 60);
+
+    int centerX = g_Positions.roundTimer_pos.x;
+    int centerY = g_Positions.roundTimer_pos.y - 18;
+    int gap = 54;
+
+    int iconX = centerX - gap;
+
+    if (g_HUD_Vars.bBombPlanted) {
+        CHelpers::drawSprite(iconX, g_Positions.roundTimer_pos.y - 6, (char *) "c4", false, nullptr, 168, 24, 4);
+        g_fontRoundTimer.Print(g_Positions.roundTimer_pos.x, g_Positions.roundTimer_pos.y, 168, 24, 4, 255,
+                               FL_CENTER_X | FL_BACKDROP, 0, szRoundTime);
+    } else {
+        if (g_HUD_Vars.timer_icon.texID != 0) {
+            DrawTexture(g_HUD_Vars.timer_icon, iconX, centerY, 255, FL_NONE);
+        }
         g_fontRoundTimer.Print(g_Positions.roundTimer_pos.x, g_Positions.roundTimer_pos.y, 255, 255, 255, 255,
                                FL_CENTER_X | FL_BACKDROP, 0, szRoundTime);
-    }
-    if (g_HUD_Vars.bBombPlanted) {
-        g_fontGeneral.Print(g_Positions.roundTimer_pos.x, g_Positions.roundTimer_pos.y + 16, 255, 255, 255, 255,
-                            FL_CENTER_X | FL_BACKDROP, 0, "BOMB");
     }
 }
 
 void CTopBar::drawTeam1(char *szTeam) {
     if (szTeam != nullptr) {
-        g_fontTeamNames.Print(g_Positions.team_1_name_pos.x, g_Positions.team_1_name_pos.y, 0xff, 0x40, 0x40, 255,
+        g_fontTeamNames.Print(g_Positions.team_1_name_pos.x, g_Positions.team_1_name_pos.y, 255, 255, 255, 255,
                               FL_CENTER_X | FL_BACKDROP, 0, szTeam);
     }
 }
 void CTopBar::drawTeam2(char *szTeam) {
     if (szTeam != nullptr) {
-        g_fontTeamNames.Print(g_Positions.team_2_name_pos.x, g_Positions.team_2_name_pos.y, 0x99, 0xcc, 0xff, 255,
+        g_fontTeamNames.Print(g_Positions.team_2_name_pos.x, g_Positions.team_2_name_pos.y, 255, 255, 255, 255,
                               FL_CENTER_X | FL_BACKDROP, 0, szTeam);
     }
 }
@@ -72,7 +84,6 @@ void CTopBar::drawTeam2Flag(hud_texture_s flag) {
     }
 }
 void CTopBar::drawBackground() {
-    // fillrgba(g_Positions.topbar_pos.x, g_Positions.topbar_pos.y, (int)cvars->getConVarFloat("topbar_width"),
-    // (int)cvars->getConVarFloat("topbar_height"), 0, 0, 0, 178);
-    //  FIX add this
+    fillrgba(g_Positions.topbar_pos.x, g_Positions.topbar_pos.y, (int) CConVars::getConVarFloat("topbar_width"),
+             (int) CConVars::getConVarFloat("topbar_height"), 0, 0, 0, 128);
 }

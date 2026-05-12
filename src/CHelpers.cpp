@@ -98,11 +98,13 @@ auto CHelpers::bDirectoryExists(char *szDirectory) -> bool {
     return (GetFileAttributesA(szDirectory) != INVALID_FILE_ATTRIBUTES);
 }
 
-void CHelpers::drawSprite(int x, int y, char *szWeapon, bool reversed, dim_s *dim) {
+void CHelpers::drawSprite(int x, int y, char *szWeapon, bool reversed, dim_s *dim, int r, int g, int b) {
     char buffer[256];
 
     if (strstr(szWeapon, "nade") != nullptr) {
         sprintf(buffer, "d_grenade");
+    } else if (strcmp(szWeapon, "smallskull") == 0) {
+        sprintf(buffer, "smallskull");
     } else if (strstr(szWeapon, "c4") != nullptr) {
         sprintf(buffer, "c4");
     } else if (strstr(szWeapon, "defuser") != nullptr) {
@@ -124,7 +126,7 @@ void CHelpers::drawSprite(int x, int y, char *szWeapon, bool reversed, dim_s *di
             x *= -1; // should probably do this with some GL thing
         }
 
-        ENGINE.pfnSPR_Set(g_Sprites[index].hspr, 255, 255, 255);
+        ENGINE.pfnSPR_Set(g_Sprites[index].hspr, r, g, b);
         int width = g_Sprites[index].rc.right - g_Sprites[index].rc.left;
         int height = g_Sprites[index].rc.bottom - g_Sprites[index].rc.top;
         ENGINE.pfnSPR_DrawAdditive(0, x - (width / 2), y - (height / 2), &(g_Sprites[index].rc));

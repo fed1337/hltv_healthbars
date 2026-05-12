@@ -89,7 +89,7 @@ void InitializeHack() {
     }
 
     CONPRINTF(
-            "\r\n================================================\r\nHLTV Health Bars Overlay v1.0.0\r\n"
+            "\r\n================================================\r\nHLTV Health Bars Overlay v1.1.0\r\n"
             "https://github.com/fed1337/hltv_healthbars\r\nFor help, type hltv_help\r\n"
             "================================================\r\n\r\n");
 

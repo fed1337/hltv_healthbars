@@ -96,6 +96,7 @@ jobs:
           cp cstrike/gfx/vgui/timer.tga  dist/cstrike/gfx/vgui/
           cp cstrike/720.cfg  dist/cstrike/
           cp cstrike/sprites.txt dist/hltv_healthbars/
+          cp cstrike/timer.png dist/hltv_healthbars/
           cp README.md dist/
           cd dist
 

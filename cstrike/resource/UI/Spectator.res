@@ -24,23 +24,6 @@
 		"enabled"		"0"
 		"tabPosition"	"0"
 	}
-	"HeaderBar"
-	{
-		"ControlName"	"ImagePanel"
-		"fieldName"		"HeaderBar"
-		"xpos"			"0"
-		"ypos"			"0"
-		"wide"			"1000"
-		"tall"			"40"
-		"autoResize"	"0"
-		"pinCorner"		"0"
-		"visible"		"1"
-		"enabled"		"1"
-		"tabPosition"	"0"
-		"fillcolor"		"0 0 0 32"
-		"labelText"		""
-		"textAlignment"	"west"
-	}
 	"BottomBar"
 	{
 		"ControlName"		"Frame"
@@ -143,7 +126,7 @@
 	{
 		"ControlName"	"Label"
 		"fieldName"		"TERScoreValue"
-		"xpos"			"c-105"
+		"xpos"			"c-110"
 		"ypos"			"20"
 		"wide"			"14"
 		"tall"			"14"
@@ -166,7 +149,7 @@
 		"tall"			"16"
 		"autoResize"	"0"
 		"pinCorner"		"0"
-		"visible"		"1"
+		"visible"		"0"
 		"enabled"		"1"
 		"labelText"		""
 		"textAlignment"	"west"

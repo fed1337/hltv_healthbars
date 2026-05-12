@@ -16,7 +16,7 @@ void DrawTexture(hud_texture_s texture, int x, int y, float alpha, int flags) {
 
     glBindTexture(GL_TEXTURE_2D, texture.texID);
 
-    glColor4f(1.0, 1.0, 1.0, static_cast<GLfloat>(alpha));
+    glColor4f(1.0, 1.0, 1.0, alpha);
 
     glBegin(GL_QUADS);
     glTexCoord2f(0, 0.F);

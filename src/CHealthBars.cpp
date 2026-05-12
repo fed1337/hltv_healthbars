@@ -1,48 +1,45 @@
 #include "stdafx.h"
 
 void CHealthBars::Draw() {
-    int addedT = 0;
-    int addedCT = 0;
-
-    if (g_Positions.iArrPosCT == nullptr || g_Positions.iArrPosT == nullptr) {
+    if (!g_Positions.iArrPosCT || !g_Positions.iArrPosT) {
         return;
     }
 
-    for (int i = 0; i < 33; i++) {
+    int addedT = 0;
+    int addedCT = 0;
+
+    // Max players in GoldSrc is 32, but index 0 is world, so 1-32.
+    for (int i = 1; i <= 32; i++) {
         cl_entity_s *ent = ENGINE.GetEntityByIndex(i);
 
         if (!CHelpers::bIsValidEnt(ent)) {
             continue;
         }
 
-        playerInfo_s info;
-        info.szWeapon = CHelpers::szGetWeaponName(ent->curstate.weaponmodel);
-        if (info.szWeapon == nullptr) {
-            info.szWeapon = "unknown";
-        }
-        info.szModel = CHelpers::szGetPlayerModel(i);
-        if (info.szModel == nullptr) {
-            info.szModel = "unknown";
-        }
+        // Populate player info
+        playerInfo_s info = {}; // Initialize to zero
+
         info.szName = CHelpers::szGetPlayerName(i);
-        if (info.szName == nullptr) {
-            info.szName = "unknown";
-        }
+        info.szModel = CHelpers::szGetPlayerModel(i);
+        info.szWeapon = CHelpers::szGetWeaponName(ent->curstate.weaponmodel);
+
+        // Null checks
+        if (!info.szName) info.szName = "unknown";
+        if (!info.szModel) info.szModel = "unknown";
+        if (!info.szWeapon) info.szWeapon = "unknown";
+
         info.team = CHelpers::iGetTeam(info.szModel);
-        info.hp = CHelpers::iGetPlayerHP(i); // HLTV only
+        info.hp = CHelpers::iGetPlayerHP(i);
         info.sequence = CHelpers::iTranslateSequence(ent->curstate.sequence);
         info.kitbomb = CHelpers::bHasKitOrBomb(ent);
 
-        if (info.team == 1 && addedT < 5) // t
-        {
-            CClassicHealthBar card(g_Positions.iArrPosT[addedT].x, g_Positions.iArrPosT[addedT].y, 162, 30, info);
-
+        // Position and Draw
+        if (info.team == 1 && addedT < 5) {
+            CClassicHealthBar card(g_Positions.iArrPosT[addedT].x, g_Positions.iArrPosT[addedT].y, 192, 32, info);
             card.Draw();
             addedT++;
-        } else if (info.team == 2 && addedCT < 5) // ct
-        {
-            CClassicHealthBar card(g_Positions.iArrPosCT[addedCT].x, g_Positions.iArrPosCT[addedCT].y, 162, 30, info);
-
+        } else if (info.team == 2 && addedCT < 5) {
+            CClassicHealthBar card(g_Positions.iArrPosCT[addedCT].x, g_Positions.iArrPosCT[addedCT].y, 192, 32, info);
             card.Draw();
             addedCT++;
         }

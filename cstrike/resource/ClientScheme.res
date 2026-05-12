@@ -80,8 +80,8 @@ Scheme
 		"BorderBuyPreset"		"255 176 0 255"	// the lit side of a control
 
 		"team0"			"204 204 204 255" // Spectators
-		"team1"			"255 0 48 255" // T's
-		"team2"			"48 48 255 255" // CT's
+		"team1"			"168 24 4 255" // T's
+		"team2"			"4 24 168 255" // CT's
 
 		// Statistics text
 		"StatisticsText"			"255 255 255 255"

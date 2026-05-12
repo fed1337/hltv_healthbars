@@ -35,28 +35,16 @@
 #include <hltv.h>
 #include <event_api.h>
 
-// Panels
-// #pragma comment(lib, "vgui.lib")
-// #include <VGUI_Font.h>
-// #include <VGUI_TextPanel.h>
-// #include <VGUI_BorderLayout.h>
-
 // OGL
 #include <gl/GL.h>
 #include <gl/GLU.h>
 #pragma comment(lib, "OpenGL32.lib")
 
 // PNG => OGL texture
-#include "loadpng.h"
 #include "../external/lodepng/lodepng.h"
 
-// F�r anti-aliased, anv�nds ej
-// #define FTGL_LIBRARY_STATIC
-// #include <FTGL/ftgl.h>
-// #pragma comment(lib, "ftgl_static.lib")
-// #pragma comment(lib, "freetype248ST.lib")
-
 // The project
+#include "loadpng.h"
 #include "striptags.h"
 #include "sprite.h"
 #include "Drawing.h"
@@ -73,7 +61,6 @@
 #include "CHealthBars.h"
 #include "CHealthBar.h"
 #include "CClassicHealthBar.h"
-#include "CCSPHealthBar.h"
 #include "CScoreboard.h"
 #include "dllmain.h"
 #include "hook.h"
@@ -83,7 +70,6 @@
 #include "hud_vidinit.h"
 #include "hud_frame.h"
 #include "hud_redraw.h"
-
 #include "CEngineFont.h"
 #include "CFont.h"
 

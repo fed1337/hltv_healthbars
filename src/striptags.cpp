@@ -31,7 +31,9 @@ void AddTag(char *szTag) {
 
 void RemoveSubstring(char *buffer, char *szStr, char *szSubstr) {
     char *match = strstr(szStr, szSubstr);
-    if (!match) return; // Always check if tag exists
+    if (match == nullptr) {
+        return; // Always check if tag exists
+    }
 
     int start = match - szStr;
     int subLen = strlen(szSubstr);
