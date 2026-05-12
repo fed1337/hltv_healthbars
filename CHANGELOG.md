@@ -1,3 +1,21 @@
+## v1.1.0 (2026-05-12)
+
+### Feat
+
+- update `CClassicHealthBar` class with new design and better indicating reloading/planting status
+- add bomb and timer icons to topbar
+- add possibility to adjust font weight (but haven't added command)
+- display skull sprite instead of HP in case of death
+
+### Fix
+
+- HP number aligned to center
+- use custom topbar background to solve text z-index issue
+
+### Refactor
+
+- remove unused `CCSPHealthBar`
+
 ## v1.0.0 (2026-05-07)
 
 ### Feat
