@@ -1,3 +1,9 @@
+## v1.1.2 (2026-05-12)
+
+### Fix
+
+- build changelog and tag after release workflow
+
 ## v1.1.1 (2026-05-12)
 
 ### Fix
