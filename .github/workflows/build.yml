@@ -58,6 +58,13 @@ jobs:
           name: hltv_healthbars
           path: artifacts
 
+      - name: Create bump and changelog
+        id: cz
+        uses: commitizen-tools/commitizen-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          changelog_increment_filename: body.md
+
       - name: Prepare release bundle
         run: |
           VERSION=v${{ env.REVISION }}
@@ -78,13 +85,6 @@ jobs:
           cd dist
 
           zip -r ../hltv_healthbars-${VERSION}.zip .
-
-      - name: Create bump and changelog
-        id: cz
-        uses: commitizen-tools/commitizen-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          changelog_increment_filename: body.md
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
