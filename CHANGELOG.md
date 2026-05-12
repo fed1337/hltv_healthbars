@@ -1,3 +1,9 @@
+## v1.1.1 (2026-05-12)
+
+### Fix
+
+- delete obsolete entry in build workflow
+
 ## v1.1.0 (2026-05-12)
 
 ### Feat
