@@ -1,3 +1,10 @@
+## v1.2.1 (2026-05-13)
+
+### Fix
+
+- compile error in dllmain
+- dll version, readme update
+
 ## v1.2.0 (2026-05-13)
 
 ### Feat
