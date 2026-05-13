@@ -1,3 +1,13 @@
+## v1.1.4 (2026-05-13)
+
+### Fix
+
+- Skull sprites sometimes break after bomb planting
+
+### Refactor
+
+- remove unused flag in makefile calls
+
 ## v1.1.3 (2026-05-12)
 
 ### Fix
