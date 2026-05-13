@@ -1,3 +1,9 @@
+## v1.2.0 (2026-05-13)
+
+### Feat
+
+- implement scoreboard showing each player's frags/headshots/deaths/ping
+
 ## v1.1.5 (2026-05-13)
 
 ### Fix
