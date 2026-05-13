@@ -15,7 +15,7 @@ FILES_H := $(shell git ls-files 'src/*.h')
 
 check:
 	clang-format --dry-run --Werror $(FILES_CPP) $(FILES_H)
-	clang-tidy -p cmake-build-minsizerel-visual-studio2019 --use-color -extra-arg="--std=c++11" $(FILES_CPP)
+	clang-tidy -p cmake-build-minsizerel-visual-studio2019 --use-color $(FILES_CPP)
 
 fix:
 	clang-format -i $(FILES_CPP) $(FILES_H)

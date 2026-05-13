@@ -25,7 +25,7 @@ public:
     void Print(int x, int y, int r, int g, int b, int a, BYTE flags, int maxlen, char *string, ...);
 
 private:
-    void Render(float x, float y, int r, int g, int b, int a, char *string);
+    void Render(float x, float y, int r, int g, int b, int a, const char *string);
 
     char name[64];
     int size;

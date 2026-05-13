@@ -28,12 +28,14 @@ void CFont::SetWeight(int i_weight) { this->weight = i_weight; }
 
 void CFont::InitText() {
     HDC hDC = CreateCompatibleDC(nullptr);
-    if (!hDC) return;
+    if (hDC == nullptr) {
+        return;
+    }
 
     HFONT hFont = CreateFontA(size, 0, 0, 0, weight, FALSE, FALSE, FALSE, ANSI_CHARSET, OUT_TT_ONLY_PRECIS,
                               CLIP_DEFAULT_PRECIS, ANTIALIASED_QUALITY, DEFAULT_PITCH | FF_DONTCARE, name);
 
-    if (!hFont) {
+    if (hFont == nullptr) {
         DeleteDC(hDC);
         return;
     }
@@ -54,7 +56,9 @@ void CFont::InitText() {
     unsigned char t_bitmap[512 * 512];
     stbtt_BakeFontBitmap(fontBuffer.data(), 0, (float) size, t_bitmap, 512, 512, 32, 96, cdata);
 
-    if (textureID != 0) glDeleteTextures(1, &textureID);
+    if (textureID != 0) {
+        glDeleteTextures(1, &textureID);
+    }
     glGenTextures(1, &textureID);
     glBindTexture(GL_TEXTURE_2D, textureID);
 
@@ -64,12 +68,14 @@ void CFont::InitText() {
 
     cheight = (float) size;
     for (int i = 0; i < 256; i++) {
-        cwidth[i] = (i >= 32 && i < 128) ? cdata[i - 32].xadvance : 0.0f;
+        cwidth[i] = (i >= 32 && i < 128) ? cdata[i - 32].xadvance : 0.0F;
     }
 }
 
 void CFont::Print(int x, int y, int r, int g, int b, int a, BYTE flags, int maxlen, char *string, ...) {
-    if (!string || !textureID) return;
+    if ((string == nullptr) || (textureID == 0U)) {
+        return;
+    }
 
     char strText[256];
     va_list args;
@@ -78,7 +84,7 @@ void CFont::Print(int x, int y, int r, int g, int b, int a, BYTE flags, int maxl
     va_end(args);
 
     float drawlen = 0;
-    for (char *p = strText; *p; p++) {
+    for (char *p = strText; *p != 0; p++) {
         drawlen += cwidth[(unsigned char) *p];
         if (maxlen > 0 && drawlen >= maxlen) {
             *p = 0;
@@ -86,12 +92,18 @@ void CFont::Print(int x, int y, int r, int g, int b, int a, BYTE flags, int maxl
         }
     }
 
-    float fx = (float) x;
-    float fy = (float) y;
+    auto fx = (float) x;
+    auto fy = (float) y;
 
-    if (flags & FL_CENTER_X) fx -= (drawlen / 2.0F);
-    if (flags & FL_RIGHT) fx -= drawlen;
-    if (flags & FL_CENTER_Y) fy += (cheight / 2.0F);
+    if ((flags & FL_CENTER_X) != 0) {
+        fx -= (drawlen / 2.0F);
+    }
+    if ((flags & FL_RIGHT) != 0) {
+        fx -= drawlen;
+    }
+    if ((flags & FL_CENTER_Y) != 0) {
+        fy += (cheight / 2.0F);
+    }
 
     // 1. Save all attributes (Blending, Alpha Test, Textures, etc.)
     glPushAttrib(GL_ALL_ATTRIB_BITS);
@@ -109,14 +121,14 @@ void CFont::Print(int x, int y, int r, int g, int b, int a, BYTE flags, int maxl
     glDisable(GL_ALPHA_TEST); // Usually needed for font textures
 
     // Shadow / Outline
-    if (flags & FL_OUTLINE) {
+    if ((flags & FL_OUTLINE) != 0) {
         Render(fx - 1, fy, 0, 0, 0, a, strText);
         Render(fx + 1, fy, 0, 0, 0, a, strText);
         Render(fx, fy - 1, 0, 0, 0, a, strText);
         Render(fx, fy + 1, 0, 0, 0, a, strText);
     }
 
-    if (flags & FL_BACKDROP) {
+    if ((flags & FL_BACKDROP) != 0) {
         Render(fx + 1, fy + 1, 0, 0, 0, a, strText);
     }
 
@@ -130,11 +142,11 @@ void CFont::Print(int x, int y, int r, int g, int b, int a, BYTE flags, int maxl
     glPopAttrib();
 }
 
-void CFont::Render(float x, float y, int r, int g, int b, int a, char *string) {
+void CFont::Render(float x, float y, int r, int g, int b, int a, const char *string) {
     glColor4ub(r, g, b, a);
     glBegin(GL_QUADS);
-    for (int i = 0; string[i]; i++) {
-        unsigned char c = (unsigned char) string[i];
+    for (int i = 0; string[i] != 0; i++) {
+        auto c = (unsigned char) string[i];
         if (c >= 32 && c < 128) {
             stbtt_aligned_quad q;
             stbtt_GetBakedQuad(cdata, 512, 512, c - 32, &x, &y, &q, 1);

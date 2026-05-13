@@ -117,27 +117,46 @@ void CHelpers::drawSprite(int x, int y, char *szWeapon, bool reversed, dim_s *di
         sprintf(buffer, "d_%s", szWeapon);
     }
 
-    int index = 0;
-    index = GetSpriteIndex(buffer);
-
-    if (index != -1) {
-        if (reversed) {
-            glScalef(-1.F, 1.F, 1.F);
-            x *= -1; // should probably do this with some GL thing
-        }
-
-        ENGINE.pfnSPR_Set(g_Sprites[index].hspr, r, g, b);
-        int width = g_Sprites[index].rc.right - g_Sprites[index].rc.left;
-        int height = g_Sprites[index].rc.bottom - g_Sprites[index].rc.top;
-        ENGINE.pfnSPR_DrawAdditive(0, x - (width / 2), y - (height / 2), &(g_Sprites[index].rc));
-
-        if (dim != nullptr) {
-            dim->width = ENGINE.pfnSPR_Width(g_Sprites[index].hspr, 0);
-            dim->height = ENGINE.pfnSPR_Height(g_Sprites[index].hspr, 0);
-        }
-
-        glLoadIdentity();
+    int index = GetSpriteIndex(buffer);
+    if (index == -1) {
+        return;
     }
+
+    // 1. SAVE EVERYTHING
+    glPushAttrib(GL_ALL_ATTRIB_BITS);
+    glPushMatrix(); // Save the engine's current matrix (translation/scale)
+
+    // 2. SETUP CLEAN STATE
+    glEnable(GL_TEXTURE_2D);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); // Standard for additive/index
+
+    // IMPORTANT: Unbind any texture bound manually (like flags/timer)
+    // This forces the engine's pfnSPR_Draw to bind its own sprite sheet
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    if (reversed) {
+        // Instead of glLoadIdentity, translate to the point then scale
+        glTranslatef(static_cast<float>(x), static_cast<float>(y), 0.0F);
+        glScalef(-1.0F, 1.0F, 1.0F);
+        glTranslatef(static_cast<float>(-x), static_cast<float>(-y), 0.0F);
+    }
+
+    // 3. DRAW
+    ENGINE.pfnSPR_Set(g_Sprites[index].hspr, r, g, b);
+    int width = g_Sprites[index].rc.right - g_Sprites[index].rc.left;
+    int height = g_Sprites[index].rc.bottom - g_Sprites[index].rc.top;
+
+    ENGINE.pfnSPR_DrawAdditive(0, x - (width / 2), y - (height / 2), &(g_Sprites[index].rc));
+
+    if (dim != nullptr) {
+        dim->width = width;
+        dim->height = height;
+    }
+
+    // 4. RESTORE
+    glPopMatrix(); // Put the engine's matrix back exactly as it was
+    glPopAttrib(); // Restore all GL flags
 }
 
 auto CHelpers::DumpMemory(void *dwAddress, int size, char *szFileName) -> BOOL {

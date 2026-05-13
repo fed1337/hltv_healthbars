@@ -14,7 +14,9 @@ void CTopBar::Draw() {
 }
 
 void CTopBar::drawRoundTimer(int time) {
-    if (CConVars::getConVarFloat("enable_roundtimer") != 1) return;
+    if (CConVars::getConVarFloat("enable_roundtimer") != 1) {
+        return;
+    }
 
     char szRoundTime[32];
     sprintf(szRoundTime, "%d:%02d", time / 60, time % 60);
@@ -84,6 +86,6 @@ void CTopBar::drawTeam2Flag(hud_texture_s flag) {
     }
 }
 void CTopBar::drawBackground() {
-    fillrgba(g_Positions.topbar_pos.x, g_Positions.topbar_pos.y, (int) CConVars::getConVarFloat("topbar_width"),
+    fillrgba(g_Positions.topbar_pos.x, (int) CConVars::getConVarFloat("topbar_width"), g_Positions.topbar_pos.y,
              (int) CConVars::getConVarFloat("topbar_height"), 0, 0, 0, 128);
 }

@@ -3,7 +3,7 @@
 class CTopBar {
 public:
     CTopBar();
-    void Draw();
+    static void Draw();
 
 private:
     int x;
@@ -17,5 +17,5 @@ private:
     static void drawTeam2Score(int teamScore, int clanScore);
     static void drawTeam1Flag(hud_texture_s flag);
     static void drawTeam2Flag(hud_texture_s flag);
-    void drawBackground();
+    static void drawBackground();
 };

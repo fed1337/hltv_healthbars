@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 void CHealthBars::Draw() {
-    if (!g_Positions.iArrPosCT || !g_Positions.iArrPosT) {
+    if ((g_Positions.iArrPosCT == nullptr) || (g_Positions.iArrPosT == nullptr)) {
         return;
     }
 
@@ -24,9 +24,15 @@ void CHealthBars::Draw() {
         info.szWeapon = CHelpers::szGetWeaponName(ent->curstate.weaponmodel);
 
         // Null checks
-        if (!info.szName) info.szName = "unknown";
-        if (!info.szModel) info.szModel = "unknown";
-        if (!info.szWeapon) info.szWeapon = "unknown";
+        if (info.szName == nullptr) {
+            info.szName = "unknown";
+        }
+        if (info.szModel == nullptr) {
+            info.szModel = "unknown";
+        }
+        if (info.szWeapon == nullptr) {
+            info.szWeapon = "unknown";
+        }
 
         info.team = CHelpers::iGetTeam(info.szModel);
         info.hp = CHelpers::iGetPlayerHP(i);

@@ -23,7 +23,7 @@ auto Hook_HUD_Redraw(float flArg, int iArg) -> int {
     }
 
     if (CConVars::getConVarFloat("draw_topbar") == 1.F) {
-        topbar->Draw();
+        CTopBar::Draw();
     }
 
     if (CConVars::getConVarFloat("draw_healthbars") == 1.F) {
