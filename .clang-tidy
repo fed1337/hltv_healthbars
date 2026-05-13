@@ -6,6 +6,7 @@ Checks: >
     performance-*,
     readability-*,
     -bugprone-easily-swappable-parameters,
+    -bugprone-swapped-arguments,
     -clang-diagnostic-microsoft-cast,
     -modernize-use-trailing-return-type,
     -readability-magic-numbers,

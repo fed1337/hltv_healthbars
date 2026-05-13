@@ -27,5 +27,7 @@ auto Hook_HUD_VidInit() -> int {
     // reload fonts on next redraw
     g_bReinitializeFonts = true;
     LoadTimerIcon();
-    return CLIENT.HUD_VidInit();
+    const int ret = CLIENT.HUD_VidInit();
+    InitializeSprites();
+    return ret;
 }

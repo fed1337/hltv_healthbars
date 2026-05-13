@@ -18,6 +18,10 @@ void ReinitializeFonts() {
 
 bool g_bReinitializeFonts = true;
 auto Hook_HUD_Redraw(float flArg, int iArg) -> int {
+    if (g_Sprites != nullptr && g_iSpriteCount > 0 && g_Sprites[0].hspr == 0) {
+        InitializeSprites();
+    }
+
     if (g_bReinitializeFonts) {
         ReinitializeFonts();
     }

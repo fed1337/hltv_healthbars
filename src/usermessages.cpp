@@ -57,8 +57,8 @@ auto RoundTime(const char *szMsgName, int iSize, pfnUserMsgHook *pBuf) -> int {
 
     // Uppdate round time
     g_HUD_Vars.iRoundTime = time;
-    g_HUD_Vars.bBombPlanted =
-            false; // the Bomb_Planted TextMsg is only ever sent after RoundTime messages, no need to reset it elsewhere
+    // Do not clear bBombPlanted here: RoundTime repeats for the whole round; clearing it made the top bar alternate
+    // between DrawTexture and pfnSPR_Draw, which broke sprite rendering for the rest of the HUD redraw.
 
     return oRoundTime(szMsgName, iSize, pBuf);
 }
@@ -72,6 +72,10 @@ auto TextMsg(const char *szMsgName, int iSize, pfnUserMsgHook *pBuf) -> int {
     if (strcmp(message, "#Bomb_Planted") == 0) {
         g_HUD_Vars.bBombPlanted = true;
         g_HUD_Vars.iRoundTime = CConVars::getConVarFloat("c4timer");
+    } else if (strcmp(message, "#Bomb_Defused") == 0 || strcmp(message, "#Target_Bombed") == 0 ||
+               strcmp(message, "#CTs_Win") == 0 || strcmp(message, "#Terrorists_Win") == 0 ||
+               strcmp(message, "#Round_Draw") == 0 || strcmp(message, "#Game_Commencing") == 0) {
+        g_HUD_Vars.bBombPlanted = false;
     }
 
     return oTextMsg(szMsgName, iSize, pBuf);

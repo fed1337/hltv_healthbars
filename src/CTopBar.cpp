@@ -28,7 +28,7 @@ void CTopBar::drawRoundTimer(int time) {
     int iconX = centerX - gap;
 
     if (g_HUD_Vars.bBombPlanted) {
-        CHelpers::drawSprite(iconX, g_Positions.roundTimer_pos.y - 6, (char *) "c4", false, nullptr, 168, 24, 4);
+        CHelpers::drawSprite(iconX, g_Positions.roundTimer_pos.y - 6, (char *) "c4", false, nullptr, 255, 255, 255);
         g_fontRoundTimer.Print(g_Positions.roundTimer_pos.x, g_Positions.roundTimer_pos.y, 168, 24, 4, 255,
                                FL_CENTER_X | FL_BACKDROP, 0, szRoundTime);
     } else {
@@ -86,6 +86,6 @@ void CTopBar::drawTeam2Flag(hud_texture_s flag) {
     }
 }
 void CTopBar::drawBackground() {
-    fillrgba(g_Positions.topbar_pos.x, (int) CConVars::getConVarFloat("topbar_width"), g_Positions.topbar_pos.y,
+    fillrgba(g_Positions.topbar_pos.x, g_Positions.topbar_pos.y, (int) CConVars::getConVarFloat("topbar_width"),
              (int) CConVars::getConVarFloat("topbar_height"), 0, 0, 0, 128);
 }
