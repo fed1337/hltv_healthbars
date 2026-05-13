@@ -1,3 +1,11 @@
+## v1.1.5 (2026-05-13)
+
+### Fix
+
+- skull drawing doesn't affect other sprites
+- top bar drawing correctly
+- clang-tidy configs incorrectly swapping parameters in fillrgba
+
 ## v1.1.4 (2026-05-13)
 
 ### Fix
