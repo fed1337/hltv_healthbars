@@ -87,7 +87,7 @@ void InitializeHack() {
     for (int i = 0; i < 32; i++) {
         g_pszPlayerNames[i] = new char[64];
     }
-2
+
     CONPRINTF(
             "\r\n================================================\r\nHLTV Health Bars Overlay v1.2.1\r\n"
             "https://github.com/fed1337/hltv_healthbars\r\nFor help, type hltv_help\r\n"
