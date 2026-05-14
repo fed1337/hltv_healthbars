@@ -8,6 +8,7 @@ Mostly used by Counter-Strike 1.6 streamers in the 2010s.
 - Set up team names and flags
 - Team total score
 - Round & bomb timers
+- Fancy scoreboard with headshot count (binded to `o` by default, see `720.cfg`)
 - Health bars
     - Side
     - Nickname
