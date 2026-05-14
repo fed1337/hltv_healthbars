@@ -34,5 +34,9 @@ auto Hook_HUD_Redraw(float flArg, int iArg) -> int {
         CHealthBars::Draw();
     }
 
+    if (CConVars::getConVarFloat("draw_scoreboard") == 1.F) {
+        CScoreboard::Draw();
+    }
+
     return CLIENT.HUD_Redraw(flArg, iArg);
 }

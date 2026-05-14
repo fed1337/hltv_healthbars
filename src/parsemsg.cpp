@@ -25,6 +25,8 @@ static int giSize;
 static int giRead;
 static int giBadRead;
 
+auto READ_OK() -> int { return (giBadRead != 0) ? 0 : 1; }
+
 void BEGIN_READ(void *buf, int size) {
     giRead = 0;
     giBadRead = 0;

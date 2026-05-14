@@ -35,8 +35,8 @@ void DumpUserMessages() {
 // === Hooked usermessages below ===
 // Team score is updated
 pfnUserMsgHook oTeamScore;
-auto TeamScore(const char *szMsgName, int iSize, pfnUserMsgHook *pBuf) -> int {
-    BEGIN_READ(pBuf, iSize);
+auto TeamScore(const char *szMsgName, int iSize, void *pbuf) -> int {
+    BEGIN_READ(pbuf, iSize);
     char *teamName = READ_STRING();
     int score = READ_BYTE();
 
@@ -46,13 +46,13 @@ auto TeamScore(const char *szMsgName, int iSize, pfnUserMsgHook *pBuf) -> int {
         g_HUD_Vars.iTeamScores[1] = score;
     }
 
-    return oTeamScore(szMsgName, iSize, pBuf);
+    return oTeamScore(szMsgName, iSize, pbuf);
 }
 
 // Round time is updated
 pfnUserMsgHook oRoundTime;
-auto RoundTime(const char *szMsgName, int iSize, pfnUserMsgHook *pBuf) -> int {
-    BEGIN_READ(pBuf, iSize);
+auto RoundTime(const char *szMsgName, int iSize, void *pbuf) -> int {
+    BEGIN_READ(pbuf, iSize);
     int time = READ_SHORT();
 
     // Uppdate round time
@@ -60,13 +60,13 @@ auto RoundTime(const char *szMsgName, int iSize, pfnUserMsgHook *pBuf) -> int {
     // Do not clear bBombPlanted here: RoundTime repeats for the whole round; clearing it made the top bar alternate
     // between DrawTexture and pfnSPR_Draw, which broke sprite rendering for the rest of the HUD redraw.
 
-    return oRoundTime(szMsgName, iSize, pBuf);
+    return oRoundTime(szMsgName, iSize, pbuf);
 }
 
 // Centered text
 pfnUserMsgHook oTextMsg;
-auto TextMsg(const char *szMsgName, int iSize, pfnUserMsgHook *pBuf) -> int {
-    BEGIN_READ(pBuf, iSize);
+auto TextMsg(const char *szMsgName, int iSize, void *pbuf) -> int {
+    BEGIN_READ(pbuf, iSize);
     int destinationType = READ_BYTE();
     char *message = READ_STRING();
     if (strcmp(message, "#Bomb_Planted") == 0) {
@@ -78,49 +78,74 @@ auto TextMsg(const char *szMsgName, int iSize, pfnUserMsgHook *pBuf) -> int {
         g_HUD_Vars.bBombPlanted = false;
     }
 
-    return oTextMsg(szMsgName, iSize, pBuf);
+    return oTextMsg(szMsgName, iSize, pbuf);
 }
 
-// TODO add the following two to the overlay
 pfnUserMsgHook oScoreInfo;
-auto ScoreInfo(const char *szMsgName, int iSize, pfnUserMsgHook *pBuf) -> int {
-    BEGIN_READ(pBuf, iSize);
-    int playerID = READ_BYTE();
-    int frags = READ_BYTE();
-    int deaths = READ_BYTE();
-    int classID = READ_BYTE();
-    int teamID = READ_BYTE();
+auto try_scoreinfo(void *pbuf, int iSize, int skipBytes, int *playerID, int *frags, int *deaths, int *classID,
+                   int *teamID) -> bool {
+    BEGIN_READ(pbuf, iSize);
+    for (int s = 0; s < skipBytes; s++) {
+        READ_BYTE();
+    }
+    *playerID = READ_BYTE();
+    *frags = READ_SHORT();
+    *deaths = READ_SHORT();
+    *classID = READ_SHORT();
+    *teamID = READ_SHORT();
+    return READ_OK() != 0 && *playerID >= 1 && *playerID <= SCOREBOARD_MAX_INDEX;
+}
 
-    // reset the manual counters
-    if (frags == 0) {
-        g_ScoreboardData[playerID].frags = 0;
-        g_ScoreboardData[playerID].headshots = 0;
+// HL/CS ScoreInfo: byte index + 4 shorts (see halflife dlls/player.cpp). Some paths pass an extra leading byte
+// (e.g. iSize 10); try skip 0/1 so reads stay aligned with the game scoreboard.
+auto ScoreInfo(const char *szMsgName, int iSize, void *pbuf) -> int {
+    int playerID = 0;
+    int frags = 0;
+    int deaths = 0;
+    int classID = 0;
+    int teamID = 0;
+    bool ok = false;
+
+    if (iSize >= 9) {
+        for (int skip = 0; skip <= 1 && !ok; skip++) {
+            if (try_scoreinfo(pbuf, iSize, skip, &playerID, &frags, &deaths, &classID, &teamID)) {
+                ok = true;
+            }
+        }
     }
 
+    if (ok) {
+        if (frags == 0 && deaths == 0) {
+            g_ScoreboardData[playerID].headshots = 0;
+        }
 
-    g_ScoreboardData[playerID].score = frags;
-    g_ScoreboardData[playerID].deaths = deaths;
+        g_ScoreboardData[playerID].id = playerID;
+        g_ScoreboardData[playerID].frags = frags;
+        g_ScoreboardData[playerID].score = frags;
+        g_ScoreboardData[playerID].deaths = deaths;
+        g_ScoreboardData[playerID].teamId = teamID;
+        (void) classID;
+    }
 
-    return oScoreInfo(szMsgName, iSize, pBuf);
+    return oScoreInfo(szMsgName, iSize, pbuf);
 }
 
 pfnUserMsgHook oDeathMsg;
-auto DeathMsg(const char *szMsgName, int iSize, pfnUserMsgHook *pBuf) -> int {
-    BEGIN_READ(pBuf, iSize);
+auto DeathMsg(const char *szMsgName, int iSize, void *pbuf) -> int {
+    BEGIN_READ(pbuf, iSize);
 
     int KillerID = READ_BYTE();
     int VictimID = READ_BYTE();
     int IsHeadshot = READ_BYTE();
     char *TruncatedWeaponName = READ_STRING();
+    (void) VictimID;
+    (void) TruncatedWeaponName;
 
-    g_ScoreboardData[KillerID].frags++;
-
-    if (IsHeadshot == 1) {
+    if (KillerID >= 1 && KillerID <= SCOREBOARD_MAX_INDEX && KillerID != VictimID && IsHeadshot == 1) {
         g_ScoreboardData[KillerID].headshots++;
     }
 
-
-    return oDeathMsg(szMsgName, iSize, pBuf);
+    return oDeathMsg(szMsgName, iSize, pbuf);
 }
 
 void HookUserMessages() {

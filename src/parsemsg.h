@@ -31,3 +31,4 @@ auto READ_STRING() -> char *;
 auto READ_COORD() -> float;
 auto READ_ANGLE() -> float;
 auto READ_HIRESANGLE() -> float;
+auto READ_OK() -> int;

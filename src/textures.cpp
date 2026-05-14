@@ -7,14 +7,14 @@ void DrawTexture(hud_texture_s texture, int x, int y, float alpha, int flags) {
     if (texture.texID == 0) return;
 
     // Use a local copy for calculations to keep the logic clean
-    auto fx = (float)x;
-    auto fy = (float)y;
-    auto fw = (float)texture.width;
-    auto fh = (float)texture.height;
+    auto fx = (float) x;
+    auto fy = (float) y;
+    auto fw = (float) texture.width;
+    auto fh = (float) texture.height;
 
     if ((flags & FL_CENTER_X) != 0) fx -= fw / 2.0F;
     if ((flags & FL_CENTER_Y) != 0) fy -= fh / 2.0F;
-    if ((flags & FL_RIGHT) != 0)    fx -= fw;
+    if ((flags & FL_RIGHT) != 0) fx -= fw;
 
     glPushAttrib(GL_ALL_ATTRIB_BITS);
 
@@ -34,10 +34,14 @@ void DrawTexture(hud_texture_s texture, int x, int y, float alpha, int flags) {
     glColor4f(1.0F, 1.0F, 1.0F, alpha);
 
     glBegin(GL_QUADS);
-    glTexCoord2f(0.0F, 0.0F); glVertex2f(fx, fy);
-    glTexCoord2f(1.0F, 0.0F); glVertex2f(fx + fw, fy);
-    glTexCoord2f(1.0F, 1.0F); glVertex2f(fx + fw, fy + fh);
-    glTexCoord2f(0.0F, 1.0F); glVertex2f(fx, fy + fh);
+    glTexCoord2f(0.0F, 0.0F);
+    glVertex2f(fx, fy);
+    glTexCoord2f(1.0F, 0.0F);
+    glVertex2f(fx + fw, fy);
+    glTexCoord2f(1.0F, 1.0F);
+    glVertex2f(fx + fw, fy + fh);
+    glTexCoord2f(0.0F, 1.0F);
+    glVertex2f(fx, fy + fh);
     glEnd();
 
     glBindTexture(GL_TEXTURE_2D, 0); // Explicitly unbind
