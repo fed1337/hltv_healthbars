@@ -82,6 +82,7 @@ jobs:
           cp cstrike/sprites.txt dist/hltv_healthbars/
           cp cstrike/timer.png dist/hltv_healthbars/
           cp README.md dist/
+          cp cstrike/screenshot.webp dist/hltv_healthbars/
           cd dist
 
           zip -r ../hltv_healthbars-${VERSION}.zip .

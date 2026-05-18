@@ -3,6 +3,8 @@
 A tool for watching HLTV demos and live HLTV servers.
 Mostly used by Counter-Strike 1.6 streamers in the 2010s.
 
+![Screenshot of a HLTV Healthbars Overlay](cstrike/screenshot.webp)
+
 ## Features
 
 - Set up team names and flags
@@ -33,6 +35,22 @@ Mostly used by Counter-Strike 1.6 streamers in the 2010s.
 9. (optional) Download & install `Roboto Condensed` font
    from [Google Fonts](https://fonts.google.com/specimen/Roboto+Condensed)
 10. (optional) If you do not want to run the game in 1280x720, copy `720.cfg` and adjust accordingly
+
+Tested on
+```text
+Protocol version 48
+Exe version 1.1.2.6 (cstrike)
+Exe build: 16:05:41 Jun 15 2009 (4554)
+```
+
+Unfortunatelly, newer versions of the game are not supported (yet).
+
+### NOTE THAT
+
+1. You **will** get VAC-banned if connected to the game server.
+2. You will **not** get VAC-banned if you play a demo or connect to HLTV server.
+3. Therefore `connect` command is disabled and renamed to `hltv_connect` however, it does **not** distinguish
+   between HLTV server and HLDS.
 
 ## Building from source
 
